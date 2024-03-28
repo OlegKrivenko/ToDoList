@@ -14,14 +14,6 @@ code {
 
 /* Це для bootstrap */
 #root {
-  display: flex;
   margin: 20px auto;
-  justify-content: center;
-}
-.list-group {
   width: 1000px;
-}
-.col {
-  display: flex;
-  justify-content: center;
 }

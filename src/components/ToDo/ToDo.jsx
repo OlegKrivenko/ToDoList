@@ -1,13 +1,13 @@
-const ToDo = ({ todo }) => {
+const ToDo = ({ todo, deleteToDo, handleCheckCompleted }) => {
   return (
-    <li class="list-group-item">
+    <li className="list-group-item">
       <div className="row justify-content-between">
         <div className="col-10">
           <input
             className="form-check-input me-2"
             type="checkbox"
             checked={todo.completed}
-            // onChange={() => handleCheckCompleted(todo.id)}
+            onChange={() => handleCheckCompleted(todo.id)}
           />
           {todo.title}
         </div>
@@ -17,7 +17,7 @@ const ToDo = ({ todo }) => {
             type="button"
             className="btn-close"
             aria-label="Close"
-            // onClick={() => handleDelete(todo.id)}
+            onClick={() => deleteToDo(todo.id)}
           ></button>
         </div>
       </div>
