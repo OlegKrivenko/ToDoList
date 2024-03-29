@@ -1,25 +1,38 @@
 import { Component } from 'react';
-import ToDo from '../ToDo';
-import todo from '../../todo.json';
-import FormToDo from 'components/FormToDo';
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix';
+
+import ToDo from '../ToDo';
+import FormToDo from 'components/FormToDo';
 
 class ToDoList extends Component {
   state = {
-    todoList: todo,
+    todoList: '',
     isCreate: false,
     isDelete: false,
   };
 
   componentDidMount() {
+    console.log('componentDidMount');
     if (localStorage.getItem('todo')) {
-      // console.log(Boolean(localStorage.getItem('todo')));
-
       this.setState({ todoList: JSON.parse(localStorage.getItem('todo')) });
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
+    console.log(prevState.todoList.length);
+    console.log(this.state.todoList.length);
+
+    localStorage.setItem('todo', JSON.stringify(this.state.todoList));
+
+    if (prevState.todoList.length > this.state.todoList.length) {
+      Notify.failure('ToDo has been deleted successfully !');
+    }
+    if (prevState.todoList.length < this.state.todoList.length) {
+      Notify.success('ToDo has been added successfully !');
+    }
+  }
 
   addToDo = value => {
     this.setState(prev => {
@@ -51,19 +64,23 @@ class ToDoList extends Component {
   };
 
   render() {
+    console.log('render');
     return (
       <>
+        <h1>My todo list</h1>
         <FormToDo addToDo={this.addToDo} />
-        <ul className="list-group list-group-flush">
-          {this.state.todoList.map(todo => (
-            <ToDo
-              key={todo.id}
-              todo={todo}
-              deleteToDo={this.deleteToDo}
-              handleCheckCompleted={this.handleCheckCompleted}
-            />
-          ))}
-        </ul>
+        {this.state.todoList.length > 0 && (
+          <ul className="list-group list-group-flush">
+            {this.state.todoList.map(todo => (
+              <ToDo
+                key={todo.id}
+                todo={todo}
+                deleteToDo={this.deleteToDo}
+                handleCheckCompleted={this.handleCheckCompleted}
+              />
+            ))}
+          </ul>
+        )}
       </>
     );
   }
